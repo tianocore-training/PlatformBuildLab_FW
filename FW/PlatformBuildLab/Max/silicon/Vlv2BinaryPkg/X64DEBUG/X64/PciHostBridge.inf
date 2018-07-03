@@ -50,9 +50,9 @@
 
 [PatchPcd.X64]
   ## CONSUMES
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x803805c6|0xB4D4
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x803805c6|0xB938
 
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0xB688
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0xB930
 
 
 [PcdEx.X64]

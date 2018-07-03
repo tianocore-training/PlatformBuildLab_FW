@@ -1,7 +1,7 @@
 #/** @file
 # Platform description.
 #
-# Copyright (c) 2012  - 2017, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2012  - 2018, Intel Corporation. All rights reserved.<BR>
 #                                                                                  
 # This program and the accompanying materials are licensed and made available under
 # the terms and conditions of the BSD License that accompanies this distribution.  
@@ -34,7 +34,7 @@
   DEFINE      PLATFORM_RC_PACKAGE             = Vlv2DeviceRefCodePkg
   DEFINE      PLATFORM_BINARY_PACKAGE         = Vlv2BinaryPkg
   OUTPUT_DIRECTORY                    = Build/$(PLATFORM_PACKAGE)
-  SUPPORTED_ARCHITECTURES             = IA32
+  SUPPORTED_ARCHITECTURES             = IA32|X64
   BUILD_TARGETS                       = DEBUG|RELEASE
   SKUID_IDENTIFIER                    = DEFAULT
 
@@ -105,7 +105,15 @@
   UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
   UefiApplicationEntryPoint|MdePkg/Library/UefiApplicationEntryPoint/UefiApplicationEntryPoint.inf
   DxeSmmDriverEntryPoint|IntelFrameworkPkg/Library/DxeSmmDriverEntryPoint/DxeSmmDriverEntryPoint.inf
-
+!if $(HTTP_BOOT_SUPPORT) == TRUE  
+  TcgPhysicalPresenceLib|SecurityPkg/Library/DxeTcgPhysicalPresenceLib/DxeTcgPhysicalPresenceLib.inf
+  Tcg2PhysicalPresenceLib|SecurityPkg/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
+  TcgPpVendorLib|SecurityPkg/Library/TcgPpVendorLibNull/TcgPpVendorLibNull.inf
+  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
+  Tpm2DeviceLib|SecurityPkg/Library/Tpm2DeviceLibRouter/Tpm2DeviceLibRouterDxe.inf
+  TlsLib|CryptoPkg/Library/TlsLib/TlsLib.inf
+!endif
+  
   #
   # Basic
   #
@@ -178,6 +186,11 @@
   UdpIoLib|MdeModulePkg/Library/DxeUdpIoLib/DxeUdpIoLib.inf
   TcpIoLib|MdeModulePkg/Library/DxeTcpIoLib/DxeTcpIoLib.inf
   DpcLib|MdeModulePkg/Library/DxeDpcLib/DxeDpcLib.inf
+!if $(HTTP_BOOT_SUPPORT) == TRUE
+  HttpLib|MdeModulePkg/Library/DxeHttpLib/DxeHttpLib.inf
+  PlatformBootManagerLib | $(PLATFORM_PACKAGE)/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+  BootLogoLib | MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
+!endif
 !endif
 !if $(S3_ENABLE) == TRUE
   S3Lib|IntelFrameworkModulePkg/Library/PeiS3Lib/PeiS3Lib.inf
@@ -186,18 +199,15 @@
   OemHookStatusCodeLib|MdeModulePkg/Library/OemHookStatusCodeLibNull/OemHookStatusCodeLibNull.inf
 
 !if $(CAPSULE_ENABLE) == TRUE
- CapsuleLib|IntelFrameworkModulePkg/Library/DxeCapsuleLib/DxeCapsuleLib.inf
+  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeCapsuleLib.inf
 !else
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
 !endif
 
-!if $(CAPSULE_GENERATE_ENABLE)
-  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeCapsuleLib.inf
   EdkiiSystemCapsuleLib|SignedCapsulePkg/Library/EdkiiSystemCapsuleLib/EdkiiSystemCapsuleLib.inf
   FmpAuthenticationLib|MdeModulePkg/Library/FmpAuthenticationLibNull/FmpAuthenticationLibNull.inf
   IniParsingLib|SignedCapsulePkg/Library/IniParsingLib/IniParsingLib.inf
   PlatformFlashAccessLib|Vlv2TbltDevicePkg/Feature/Capsule/Library/PlatformFlashAccessLib/PlatformFlashAccessLib.inf
-!endif
 
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
 
@@ -297,7 +307,7 @@
   IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
 !endif
   TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
-  TrEEPhysicalPresenceLib|SecurityPkg/Library/DxeTrEEPhysicalPresenceLib/DxeTrEEPhysicalPresenceLib.inf
+  TrEEPhysicalPresenceLib|Vlv2TbltDevicePkg/Library/DxeTrEEPhysicalPresenceLib/DxeTrEEPhysicalPresenceLib.inf
 !if $(FTPM_ENABLE) == TRUE  
   TrEEPpVendorLib|SecurityPkg/Library/TrEEPpVendorLibNull/TrEEPpVendorLibNull.inf
 !endif  
@@ -364,6 +374,18 @@
   Tpm2DeviceLib|Vlv2TbltDevicePkg/Library/Tpm2DeviceLibSeCPei/Tpm2DeviceLibSeC.inf
 !endif
 
+
+
+[LibraryClasses.X64]
+  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
+  MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
+  !if $(TPM_ENABLED) == TRUE
+    BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+  !endif
+
+  !if $(SECURE_BOOT_ENABLE) == TRUE
+    BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+  !endif
 [LibraryClasses.IA32]
   #
   # DXE phase common
@@ -470,7 +492,7 @@
   DebugAgentLib|SourceLevelDebugPkg/Library/DebugAgent/DxeDebugAgentLib.inf
 !endif
 
-!if $(CAPSULE_GENERATE_ENABLE)
+!if $(CAPSULE_ENABLE) == TRUE
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeRuntimeCapsuleLib.inf
 !endif
 [LibraryClasses.common.UEFI_DRIVER]
@@ -631,6 +653,9 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdHiiOsRuntimeSupport|FALSE
 
 [PcdsFixedAtBuild.common]
+!if $(HTTP_BOOT_SUPPORT) == TRUE
+  gEfiNetworkPkgTokenSpaceGuid.PcdAllowHttpConnections|TRUE
+!endif
 !if $(MINNOW2_FSP_BUILD) == TRUE
 # $(FLASH_REGION_VLVMICROCODE_BASE)
   gFspWrapperTokenSpaceGuid.PcdCpuMicrocodePatchAddress|0xFFC00000
@@ -921,7 +946,7 @@ gEfiMdeModulePkgTokenSpaceGuid.PcdSystemRebootAfterCapsuleProcessFlag|0x0001
   gEfiVLVTokenSpaceGuid.PcdCpuLockBoxSize|0
   gEfiSecurityPkgTokenSpaceGuid.PcdUserPhysicalPresence|TRUE
 
-!if $(CAPSULE_GENERATE_ENABLE)
+!if $(CAPSULE_ENABLE)
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
   gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{0x7b, 0x26, 0x96, 0x40, 0x0a, 0xda, 0xeb, 0x42, 0xb5, 0xeb, 0xfe, 0xf3, 0x1d, 0x20, 0x7c, 0xb4}
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{0x59, 0x3A, 0xD8, 0x14, 0x10, 0xA8, 0x56, 0x45, 0x81, 0x92, 0x1C, 0x0A, 0x59, 0x3C, 0x06, 0x5C}
@@ -930,7 +955,7 @@ gEfiMdeModulePkgTokenSpaceGuid.PcdSystemRebootAfterCapsuleProcessFlag|0x0001
   
 [Components.IA32]
 
-!if $(CAPSULE_GENERATE_ENABLE)
+!if $(CAPSULE_ENABLE)
   # FMP image decriptor
   Vlv2TbltDevicePkg/Feature/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf {
     <LibraryClasses>
@@ -1169,6 +1194,7 @@ $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/fTPMInitPeim.inf
   MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.inf
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf{
     <LibraryClasses>
+      NULL|SecurityPkg/Library/DxeImageAuthenticationStatusLib/DxeImageAuthenticationStatusLib.inf
 !if $(SECURE_BOOT_ENABLE) == TRUE
       NULL|SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.inf
 !endif
@@ -1185,6 +1211,30 @@ $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/fTPMInitPeim.inf
   $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/MpCpu.inf
   $(PLATFORM_PACKAGE)/Metronome/Metronome.inf
 
+!if $(HTTP_BOOT_SUPPORT) == TRUE
+  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf{
+    <LibraryClasses>
+      OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+      IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+      BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+      PlatformBdsLib|$(PLATFORM_PACKAGE)/Library/PlatformBdsLib/PlatformBdsLib.inf
+      DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+      PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+      SerialPortLib|$(PLATFORM_PACKAGE)/Library/SerialPortLib/SerialPortLib.inf
+    !if $(FTPM_ENABLE) == TRUE  
+      Tpm2DeviceLib|Vlv2TbltDevicePkg/Library/Tpm2DeviceLibSeCDxe/Tpm2DeviceLibSeC.inf
+    !else
+      TrEEPhysicalPresenceLib|$(PLATFORM_PACKAGE)/Library/DxeTrEEPhysicalPresenceLibNull/DxeTrEEPhysicalPresenceLibNull.inf
+    !endif  
+  }
+  MdeModulePkg/Application/BootManagerMenuApp/BootManagerMenuApp.inf
+  MdeModulePkg/Application/UiApp/UiApp.inf {
+    <LibraryClasses>
+      NULL|MdeModulePkg/Library/DeviceManagerUiLib/DeviceManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
+  }
+!else
   IntelFrameworkModulePkg/Universal/BdsDxe/BdsDxe.inf{
     <LibraryClasses>
       OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
@@ -1200,11 +1250,11 @@ $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/fTPMInitPeim.inf
       TrEEPhysicalPresenceLib|$(PLATFORM_PACKAGE)/Library/DxeTrEEPhysicalPresenceLibNull/DxeTrEEPhysicalPresenceLibNull.inf
     !endif  
   }
-  
+  $(PLATFORM_PACKAGE)/UiApp/UiApp.inf
+!endif
   MdeModulePkg/Universal/LoadFileOnFv2/LoadFileOnFv2.inf
   MdeModulePkg/Universal/SmmCommunicationBufferDxe/SmmCommunicationBufferDxe.inf
 
-  $(PLATFORM_PACKAGE)/UiApp/UiApp.inf
 
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
@@ -1234,29 +1284,6 @@ $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/fTPMInitPeim.inf
     <LibraryClasses>
       FileHandleLib|MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
   }
-
-!if $(CAPSULE_GENERATE_ENABLE)
-  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf {
-    <LibraryClasses>
-      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibRsa2048Sha256/FmpAuthenticationLibRsa2048Sha256.inf
-      DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
-  }
-
-  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf {
-    <LibraryClasses>
-
-      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibRsa2048Sha256/FmpAuthenticationLibRsa2048Sha256.inf
-      DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
-  }
-
-  MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf {
-    <LibraryClasses>
-      PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
-  }
-!endif
-  
   
   MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
   PcAtChipsetPkg/PcatRealTimeClockRuntimeDxe/PcatRealTimeClockRuntimeDxe.inf
@@ -1295,6 +1322,9 @@ $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/fTPMInitPeim.inf
     <PcdsPatchableInModule>
         gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0xF0000043
   }
+
+  $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/PchInitSmm.inf
+
   $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/PchSmiDispatcher.inf
 
 !if $(PCIESC_ENABLE) == TRUE
@@ -1306,6 +1336,7 @@ $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/fTPMInitPeim.inf
   $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/SmmAccess.inf
   $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/PciHostBridge.inf
   $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/VlvInitDxe.inf
+  $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/GraphicDxeInitSmm.inf
 
   IntelFrameworkModulePkg/Universal/LegacyRegionDxe/LegacyRegionDxe.inf
   
@@ -1409,7 +1440,10 @@ $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/fTPMInitPeim.inf
   #
   MdeModulePkg/Core/PiSmmCore/PiSmmIpl.inf
   MdeModulePkg/Core/PiSmmCore/PiSmmCore.inf
-  UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf
+  UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf {
+   <PcdsFixedAtBuild>
+     gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmStackSize|0x4000
+  }
   UefiCpuPkg/CpuIo2Smm/CpuIo2Smm.inf
   MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
   UefiCpuPkg/CpuS3DataDxe/CpuS3DataDxe.inf
@@ -1575,6 +1609,17 @@ $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/fTPMInitPeim.inf
     MdeModulePkg/Universal/Network/MnpDxe/MnpDxe.inf
     MdeModulePkg/Universal/Network/ArpDxe/ArpDxe.inf
     MdeModulePkg/Universal/Network/Dhcp4Dxe/Dhcp4Dxe.inf
+!if $(HTTP_BOOT_SUPPORT) == TRUE
+    NetworkPkg/HttpDxe/HttpDxe.inf
+    NetworkPkg/HttpBootDxe/HttpBootDxe.inf
+    NetworkPkg/HttpUtilitiesDxe/HttpUtilitiesDxe.inf
+    NetworkPkg/DnsDxe/DnsDxe.inf
+    !if $(NETWORK_TLS_ENABLE) == TRUE
+      NetworkPkg/TlsDxe/TlsDxe.inf
+      NetworkPkg/TlsAuthConfigDxe/TlsAuthConfigDxe.inf
+    !endif
+    MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
+!endif
     MdeModulePkg/Universal/Network/Ip4Dxe/Ip4Dxe.inf
     MdeModulePkg/Universal/Network/Mtftp4Dxe/Mtftp4Dxe.inf
     MdeModulePkg/Universal/Network/Tcp4Dxe/Tcp4Dxe.inf {
@@ -1606,6 +1651,42 @@ MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmmDxe.inf
 
   Vlv2TbltDevicePkg/Application/FirmwareUpdate/FirmwareUpdate.inf
   Vlv2TbltDevicePkg/Application/SsdtUpdate/SsdtUpdate.inf
+
+  !if $(CAPSULE_ENABLE)
+    MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+    MdeModulePkg/Application/CapsuleApp/CapsuleApp.inf {
+      <LibraryClasses>
+        PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+    }
+  !endif
+
+  !if $(CAPSULE_ENABLE)
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf {
+    <LibraryClasses>
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibRsa2048Sha256/FmpAuthenticationLibRsa2048Sha256.inf
+      DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+  }
+
+[Components.IA32]
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf {
+    <Defines>
+      FILE_GUID = 232393E2-185F-4212-A986-2B01F529EED9
+    <LibraryClasses>
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibRsa2048Sha256/FmpAuthenticationLibRsa2048Sha256.inf
+      DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+  }
+
+[Components.X64]
+  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf {
+    <Defines>
+      FILE_GUID = F1E68873-DA37-4AA0-A12F-F0F8EBA2B24E
+    <LibraryClasses>
+      FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibRsa2048Sha256/FmpAuthenticationLibRsa2048Sha256.inf
+      PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+      DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+  }
+
+!endif
 
 [BuildOptions]
 #

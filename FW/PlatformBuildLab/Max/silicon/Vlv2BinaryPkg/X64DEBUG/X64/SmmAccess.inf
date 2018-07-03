@@ -48,10 +48,10 @@
   DISPOSABLE|SmmAccess.pdb
 
 [PatchPcd.X64]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x5BB8
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x5F20
 
   ## CONSUMES
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x803805c6|0x5BAC
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x803805c6|0x5F28
 
 
 [PcdEx.X64]

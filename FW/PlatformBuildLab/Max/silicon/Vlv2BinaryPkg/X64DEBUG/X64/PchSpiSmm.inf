@@ -48,10 +48,10 @@
   DISPOSABLE|PchSpiSmm.pdb
 
 [PatchPcd.X64]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0xC308
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0xC810
 
   ## CONSUMES
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x803805c6|0xC310
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x803805c6|0xC818
 
 
 [PcdEx.X64]

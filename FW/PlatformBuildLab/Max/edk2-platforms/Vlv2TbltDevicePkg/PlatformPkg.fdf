@@ -1,7 +1,7 @@
 #/** @file
 # FDF file of Platform.
 #
-# Copyright (c) 2008  - 2017, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2008  - 2018, Intel Corporation. All rights reserved.<BR>
 #                                                                                  
 # This program and the accompanying materials are licensed and made available under
 # the terms and conditions of the BSD License that accompanies this distribution.  
@@ -375,7 +375,7 @@ INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET
 INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/IA32/MemoryInit.inf
 !endif
 
-!if $(CAPSULE_GENERATE_ENABLE)
+!if $(CAPSULE_ENABLE)
   # FMP image decriptor
 INF RuleOverride = FMP_IMAGE_DESC Vlv2TbltDevicePkg/Feature/Capsule/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
 !endif
@@ -439,7 +439,13 @@ INF MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.
 INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
 INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/MpCpu.inf
 INF $(PLATFORM_PACKAGE)/Metronome/Metronome.inf
+!if $(HTTP_BOOT_SUPPORT) == TRUE
+INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+INF MdeModulePkg/Application/BootManagerMenuApp/BootManagerMenuApp.inf
+INF MdeModulePkg/Application/UiApp/UiApp.inf
+!else
 INF IntelFrameworkModulePkg/Universal/BdsDxe/BdsDxe.inf
+!endif
 INF MdeModulePkg/Universal/LoadFileOnFv2/LoadFileOnFv2.inf
 INF MdeModulePkg/Universal/SmmCommunicationBufferDxe/SmmCommunicationBufferDxe.inf
 INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
@@ -493,6 +499,7 @@ INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET
 
 !if $(MINNOW2_FSP_BUILD) == FALSE
 INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/PchInitDxe.inf
+INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/PchInitSmm.inf
 !endif
 INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/PchSmiDispatcher.inf
 !if $(PCIESC_ENABLE) == TRUE
@@ -506,6 +513,7 @@ INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET
 INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/PciHostBridge.inf
 !if $(MINNOW2_FSP_BUILD) == FALSE
 INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/VlvInitDxe.inf
+INF RuleOverride = BINARY $(PLATFORM_BINARY_PACKAGE)/$(DXE_ARCHITECTURE)$(TARGET)/$(DXE_ARCHITECTURE)/GraphicDxeInitSmm.inf
 !else
 INF IntelFrameworkModulePkg/Universal/LegacyRegionDxe/LegacyRegionDxe.inf
 INF Vlv2TbltDevicePkg/VlvPlatformInitDxe/VlvPlatformInitDxe.inf
@@ -681,8 +689,14 @@ FILE DRIVER = 961578FE-B6B7-44c3-AF35-6BC705CD2B1F {
     SECTION PE32 = FatBinPkg/EnhancedFatDxe/$(EDK_DXE_ARCHITECTURE)/Fat.efi
   }
 #
-# UEFI Shell
+# UEFI Shell And /or HTTP Boot
 #
+!if $(HTTP_BOOT_SUPPORT) == TRUE
+FILE APPLICATION = 7C04A583-9E3E-4f1c-AD65-E05268D0B4D1 {
+#    SECTION PE32 = EdkShellBinPkg/FullShell/$(EDK_DXE_ARCHITECTURE)/Shell_Full.efi
+    SECTION PE32 = ShellBinPkg/UefiShell/$(EDK_DXE_ARCHITECTURE)/Shell.efi
+  }
+!else
 !if $(BUILD_NEW_SHELL) == TRUE
 #  FILE APPLICATION = PCD(gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdShellFile) {
 #  SECTION PE32 = $(OUTPUT_DIRECTORY)/DEBUG_VS2010x86/X64/shell.efi
@@ -696,6 +710,8 @@ FILE APPLICATION = PCD(gEfiIntelFrameworkModulePkgTokenSpaceGuid.PcdShellFile) {
   }
 
 !endif
+!endif
+
 
 !if $(GOP_DRIVER_ENABLE) == TRUE
 FILE FREEFORM = 878AC2CC-5343-46F2-B563-51F89DAF56BA {
@@ -727,6 +743,17 @@ FILE FREEFORM = 878AC2CC-5343-46F2-B563-51F89DAF56BA {
   INF  MdeModulePkg/Universal/Network/Udp4Dxe/Udp4Dxe.inf
   INF  MdeModulePkg/Universal/Network/Dhcp4Dxe/Dhcp4Dxe.inf
   INF  MdeModulePkg/Universal/Network/Mtftp4Dxe/Mtftp4Dxe.inf
+  !if $(HTTP_BOOT_SUPPORT) == TRUE
+  INF NetworkPkg/HttpDxe/HttpDxe.inf
+  INF NetworkPkg/HttpBootDxe/HttpBootDxe.inf
+  INF NetworkPkg/HttpUtilitiesDxe/HttpUtilitiesDxe.inf
+  INF NetworkPkg/DnsDxe/DnsDxe.inf
+  !if $(NETWORK_TLS_ENABLE) == TRUE
+    INF  NetworkPkg/TlsDxe/TlsDxe.inf
+    INF  NetworkPkg/TlsAuthConfigDxe/TlsAuthConfigDxe.inf
+  !endif
+  INF RuleOverride = DRIVER_ACPITABLE MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
+  !endif
   !if $(NETWORK_IP6_ENABLE) == TRUE
   INF  NetworkPkg/Ip6Dxe/Ip6Dxe.inf
   INF  NetworkPkg/Dhcp6Dxe/Dhcp6Dxe.inf
@@ -753,10 +780,14 @@ FILE FREEFORM = 878AC2CC-5343-46F2-B563-51F89DAF56BA {
   !endif
 !endif
 
-!if $(CAPSULE_GENERATE_ENABLE)
+!if $(CAPSULE_ENABLE)
 INF  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+!endif
+!if $(CAPSULE_ENABLE)
 INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
+!endif
 
+!if $(CAPSULE_ENABLE)
 FILE FREEFORM = PCD(gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiRsa2048Sha256TestPublicKeyFileGuid) {
      SECTION RAW = BaseTools/Source/Python/Rsa2048Sha256Sign/TestSigningPublicKey.bin
      SECTION UI = "Rsa2048Sha256TestSigningPublicKey"
@@ -824,7 +855,7 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
 
-!if $(CAPSULE_GENERATE_ENABLE)
+!if $(CAPSULE_ENABLE)
 [FV.CapsuleDispatchFv]
 FvAlignment        = 16
 ERASE_POLARITY     = 1
@@ -843,55 +874,10 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-INF  SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
+INF FILE_GUID=232393E2-185F-4212-A986-2B01F529EED9 USE=IA32 SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
+INF FILE_GUID=F1E68873-DA37-4AA0-A12F-F0F8EBA2B24E USE=X64 SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
 
-[FV.SystemFirmwareUpdateCargo]
-FvAlignment        = 16
-ERASE_POLARITY     = 1
-MEMORY_MAPPED      = TRUE
-STICKY_WRITE       = TRUE
-LOCK_CAP           = TRUE
-LOCK_STATUS        = TRUE
-WRITE_DISABLED_CAP = TRUE
-WRITE_ENABLED_CAP  = TRUE
-WRITE_STATUS       = TRUE
-WRITE_LOCK_CAP     = TRUE
-WRITE_LOCK_STATUS  = TRUE
-READ_DISABLED_CAP  = TRUE
-READ_ENABLED_CAP   = TRUE
-READ_STATUS        = TRUE
-READ_LOCK_CAP      = TRUE
-READ_LOCK_STATUS   = TRUE
 
-FILE RAW = 14D83A59-A810-4556-8192-1C0A593C065C { # PcdEdkiiSystemFirmwareFileGuid
-    FD = Vlv
-  }
-
-FILE RAW = ce57b167-b0e4-41e8-a897-5f4feb781d40 { # gEdkiiSystemFmpCapsuleDriverFvFileGuid
-    FV = CapsuleDispatchFv
-  }
-
-FILE RAW = 812136D3-4D3A-433A-9418-29BB9BF78F6E { # gEdkiiSystemFmpCapsuleConfigFileGuid
-    Vlv2TbltDevicePkg/Feature/Capsule/SystemFirmwareUpdateConfig/SystemFirmwareUpdateConfig.ini
-  }
-
-[FmpPayload.FmpPayloadSystemFirmwareRsa2048]
-IMAGE_HEADER_INIT_VERSION = 0x02
-IMAGE_TYPE_ID             = 4096267b-da0a-42eb-b5eb-fef31d207cb4 # PcdSystemFmpCapsuleImageTypeIdGuid
-IMAGE_INDEX               = 0x1
-HARDWARE_INSTANCE         = 0x0
-MONOTONIC_COUNT           = 0x2
-CERTIFICATE_GUID          = A7717414-C616-4977-9420-844712A735BF # RSA2048SHA256
-
-FV = SystemFirmwareUpdateCargo
-
-[Capsule.FVMAIN]
-CAPSULE_GUID                = 6dcbd5ed-e82d-4c44-bda1-7194199ad92a # gEfiFmpCapsuleGuid
-CAPSULE_FLAGS               = PersistAcrossReset,InitiateReset
-CAPSULE_HEADER_SIZE         = 0x20
-CAPSULE_HEADER_INIT_VERSION = 0x1
-
-FMP_PAYLOAD = FmpPayloadSystemFirmwareRsa2048
 !endif
 
 ################################################################################
@@ -1128,7 +1114,7 @@ FMP_PAYLOAD = FmpPayloadSystemFirmwareRsa2048
   FILE PEIM = $(NAMED_GUID) {
      RAW BIN                  |.acpi
      PEI_DEPEX PEI_DEPEX Optional        $(INF_OUTPUT)/$(MODULE_NAME).depex
-     PE32      PE32                      $(INF_OUTPUT)/$(MODULE_NAME).efi
+     PE32      PE32    Align=4K          $(INF_OUTPUT)/$(MODULE_NAME).efi
      UI       STRING="$(MODULE_NAME)" Optional
      VERSION  STRING="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
   }

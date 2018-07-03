@@ -48,7 +48,7 @@
   DXE_DEPEX|VlvInitDxe.depex
 
 [PatchPcd.IA32]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x3918
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x30D0
 
 
 [PcdEx.IA32]

@@ -9,10 +9,17 @@
   iii)  Run the command "git checkout vUDK2017"
    iv)  Enter folder "C:\MyWorkspace"
 
+   CryptoPkg Download:
+
+    Follow the instructions found in the file "OpenSSL-HOWTO.txt" located in your
+      workspace (e.g. "C:\MyWorkspace\edk2\CryptoPkg\Library\OpensslLib\OpenSSL-HOWTO.txt") 
+      to install the Openssl source code.
+
+
 3) Checkout MinnowBoard Max Branch from GitHub with the following command.
     i)  Run "git clone https://github.com/tianocore/edk2-platforms.git -b devel-MinnowBoardMax-UDK2017"
    ii)  Enter folder edk2-platforms
-  iii)  Run the command "git checkout 1ceafedc180c77abf9be1f812e38f8cedd83a7e8"
+  iii)  Run the command "git checkout 89b9edaa048fe6d39d53ca2a09d0ea87726f230e"
    iv)  Enter folder "C:\MyWorkspace"
    
 4) Checkout BaseTools binaries and copy them to BaseTools binary folder.
@@ -20,8 +27,8 @@
    ii)  Enter folder edk2-BaseTools-win32
   iii)  Run the command "git checkout 0e088c19ab31fccd1d2f55d9e4fe0314b57c0097"       
 
-5) Download MinnowBoard MAX 0.97 Binary Object Modules from http://firmware.intel.com/projects/minnowboard-max.
-   The "MinnowBoard_MAX-0.97-Binary.Objects.zip" file contains three additional
+5) Download MinnowBoard MAX 0.98 Binary Object Modules from http://firmware.intel.com/projects/minnowboard-max.
+   The "MinnowBoard_MAX-0.98-Binary.Objects.zip" file contains three additional
    folders required for the full source tree.
 
 	IA32FamilyCpuPkg
@@ -44,3 +51,5 @@ Directory structure will be as follows after downloading source:
 	(Windows Binary Base Tools)
     --- \silicon
 	(Step 5. above)
+
+

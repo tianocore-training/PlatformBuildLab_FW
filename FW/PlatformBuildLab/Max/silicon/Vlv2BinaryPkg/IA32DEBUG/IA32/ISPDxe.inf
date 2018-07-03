@@ -48,10 +48,10 @@
   DISPOSABLE|ISPDxe.pdb
 
 [PatchPcd.IA32]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x3E58
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x4030
 
   ## CONSUMES
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x803805c6|0x3E60
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x803805c6|0x4038
 
 
 [PcdEx.IA32]

@@ -47,7 +47,7 @@
   DXE_DEPEX|ISPDxe.depex
 
 [PatchPcd.X64]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1870
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1590
 
 
 [PcdEx.X64]

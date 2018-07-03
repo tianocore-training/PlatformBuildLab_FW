@@ -48,7 +48,7 @@
   DXE_DEPEX|PciHostBridge.depex
 
 [PatchPcd.X64]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x4C98
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x4980
 
 
 [PcdEx.X64]

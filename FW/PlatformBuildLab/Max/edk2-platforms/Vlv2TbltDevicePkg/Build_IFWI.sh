@@ -6,7 +6,7 @@ function Usage ( ) {
   echo
   echo "Script to build BIOS firmware and stitch the entire IFWI."
   echo
-  echo "Usage: Build_IFWI.sh [options]  Platform_Type  Build_Target  "
+  echo "Usage: Build_IFWI.sh [options]  PlatformType  BuildTarget  "
   echo
   echo "  [options]"
   echo "       /c     CleanAll before building"

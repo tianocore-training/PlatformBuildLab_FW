@@ -7,11 +7,11 @@ function Usage() {
   echo "***************************************************************************"
   echo "Build BIOS rom for VLV platforms."
   echo
-  echo "Usage: bld_vlv.sh  Platform_Type Build_Target"
+  echo "Usage: bld_vlv.sh  PlatformType [Build Target]"
   echo
   echo
-  echo "       Platform_Types:  MNW2"
-  echo "       Build_Targets:   Debug, Release  (default: Debug)"
+  echo "       Platform Types:  MNW2"
+  echo "       Build Targets:   Debug, Release  (default: Debug)"
   echo
   echo "***************************************************************************"
   echo "Press Control-C to exit......"
@@ -33,7 +33,7 @@ Arch=X64
 SpiLock=0
 # thread count
 TN=1
-     
+
 export CORE_PATH=$WORKSPACE/edk2
 export PLATFORM_PATH=$WORKSPACE/edk2-platforms
 export SILICON_PATH=$WORKSPACE/silicon
@@ -115,7 +115,7 @@ for (( i=1; i<=$#; ))
       #echo Removing previous build files ...
       echo " /c for Clean Build Build dir=" $WORKSPACE/Build
       if [ -d "$WORKSPACE/Build" ]; then
-        echo Removing previous build files ...
+      echo Removing previous build files ...
         rm -r $WORKSPACE/Build
       fi
       shift
@@ -282,6 +282,9 @@ BOARD_ID=$(grep '^BOARD_ID' Conf/BiosId.env | cut -d ' ' -f 3 | cut -c 1-7)
 BIOS_Name="$BOARD_ID"_"$Arch"_"$BUILD_TYPE"_"$VERSION_MAJOR"_"$VERSION_MINOR".ROM
 BIOS_ID="$BOARD_ID"_"$Arch"_"$BUILD_TYPE"_"$VERSION_MAJOR"_"$VERSION_MINOR"_GCC.bin
 cp -f $WORKSPACE/$BUILD_PATH/FV/VLV.fd  $WORKSPACE/$BIOS_Name
+
+echo > $WORKSPACE/$BUILD_PATH/FV/SYSTEMFIRMWAREUPDATECARGO.Fv
+build -p $PLATFORM_PACKAGE/PlatformCapsuleGcc.dsc
 SEC_VERSION=1.0.2.1060v5
 cat $IFWI_HEADER_FILE $SILICON_PATH/Vlv2MiscBinariesPkg/SEC/$SEC_VERSION/VLV_SEC_REGION.bin $SILICON_PATH/Vlv2MiscBinariesPkg/SEC/$SEC_VERSION/Vacant.bin $WORKSPACE/$BIOS_Name > $PLATFORM_PACKAGE/Stitch/$BIOS_ID
 

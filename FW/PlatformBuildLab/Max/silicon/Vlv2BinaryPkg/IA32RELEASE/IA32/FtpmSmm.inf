@@ -37,8 +37,8 @@
   PerformancePkg/PerformancePkg.dec
 
 [Binaries.IA32]
-  PE32|FtpmSmm.efi
   ASL|Ftpm.aml
+  PE32|FtpmSmm.efi
   SMM_DEPEX|FtpmSmm.depex
 
 [PatchPcd.IA32]

@@ -40,7 +40,7 @@
   DXE_DEPEX|PchS3SupportDxe.depex
 
 [PatchPcd.IA32]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x2FD0
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x3120
 
 
 [PcdEx.IA32]

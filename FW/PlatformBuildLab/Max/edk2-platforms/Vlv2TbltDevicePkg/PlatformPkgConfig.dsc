@@ -1,7 +1,7 @@
 #/** @file
 # platform configuration file.
 #
-# Copyright (c) 2012  - 2017, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2012  - 2018, Intel Corporation. All rights reserved.<BR>
 #                                                                                  
 # This program and the accompanying materials are licensed and made available under
 # the terms and conditions of the BSD License that accompanies this distribution.  
@@ -63,7 +63,10 @@ DEFINE SECURE_BOOT_ENABLE = TRUE
 DEFINE USER_IDENTIFICATION_ENABLE = FALSE
 DEFINE VARIABLE_INFO_ENABLE = FALSE
 DEFINE S3_ENABLE = TRUE
-DEFINE CAPSULE_ENABLE = TRUE
+
+### Enable only if SOURCE_DEBUG_ENABLE = FALSE otherwise the flash space will overload.
+### DEFINE CAPSULE_ENABLE = TRUE
+DEFINE CAPSULE_ENABLE = FALSE
 DEFINE CAPSULE_RESET_ENABLE = TRUE
 
 DEFINE GOP_DRIVER_ENABLE = TRUE
@@ -89,13 +92,14 @@ DEFINE PCIESC_ENABLE     = TRUE
 DEFINE ESRT_ENABLE       = TRUE
 
 #
-# Enable source level debug default
+# Enable source level debug default only if CAPSULE_ENABLE == FALSE
 #
+ DEFINE SOURCE_DEBUG_ENABLE     = FALSE
+!if $(CAPSULE_ENABLE) == FALSE
 !if $(SYMBOLIC_DEBUG) == TRUE
  DEFINE SOURCE_DEBUG_ENABLE     = TRUE
-!else
- DEFINE SOURCE_DEBUG_ENABLE     = FALSE
+!endif
 !endif
 
-### Enable only if SOURCE_DEBUG_ENABLE = FALSE otherwise the flash space will overload.
-### DEFINE CAPSULE_GENERATE_ENABLE = TRUE
+DEFINE HTTP_BOOT_SUPPORT = FALSE
+DEFINE NETWORK_TLS_ENABLE = FALSE

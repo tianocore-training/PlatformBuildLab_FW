@@ -51,7 +51,7 @@
   SMM_DEPEX|DigitalThermalSensor.depex
 
 [PatchPcd.X64]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x12B0
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1210
 
 
 [PcdEx.X64]

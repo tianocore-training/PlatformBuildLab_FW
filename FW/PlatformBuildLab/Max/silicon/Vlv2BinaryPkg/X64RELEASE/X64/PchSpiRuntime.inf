@@ -48,7 +48,7 @@
   DXE_DEPEX|PchSpiRuntime.depex
 
 [PatchPcd.X64]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x2920
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x2620
 
 
 [PcdEx.X64]

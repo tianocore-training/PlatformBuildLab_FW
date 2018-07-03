@@ -52,44 +52,44 @@
   DISPOSABLE|MemoryInit.pdb
 
 [PatchPcd.IA32]
-  gVlvRefCodePkgTokenSpaceGuid.PcdMemoryParameterPatchable|0x00|0xE510
+  gVlvRefCodePkgTokenSpaceGuid.PcdMemoryParameterPatchable|0x00|0x17AC0
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdEnableMemoryDown|0x01|0xDCA2
+  gVlvRefCodePkgTokenSpaceGuid.PcdEnableMemoryDown|0x01|0x17092
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdDramSpeed|0x01|0xDCA3
+  gVlvRefCodePkgTokenSpaceGuid.PcdDramSpeed|0x01|0x17094
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdDramType|0x01|0xDCC6
+  gVlvRefCodePkgTokenSpaceGuid.PcdDramType|0x01|0x17090
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdEnableDimm0|0x01|0xDCC7
+  gVlvRefCodePkgTokenSpaceGuid.PcdEnableDimm0|0x01|0x170A0
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdEnableDimm1|0x00|0xE511
+  gVlvRefCodePkgTokenSpaceGuid.PcdEnableDimm1|0x00|0x17AC2
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdDimmDataWidth|0x01|0xDCCE
+  gVlvRefCodePkgTokenSpaceGuid.PcdDimmDataWidth|0x01|0x170A8
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdDimmDensity|0x02|0xDCCF
+  gVlvRefCodePkgTokenSpaceGuid.PcdDimmDensity|0x02|0x170A9
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdDimmBusWidth|0x03|0xE42F
+  gVlvRefCodePkgTokenSpaceGuid.PcdDimmBusWidth|0x03|0x17093
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdRankPerDimm|0x00|0xE512
+  gVlvRefCodePkgTokenSpaceGuid.PcdRankPerDimm|0x00|0x17AC1
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdTcl|0x0b|0xE4DA
+  gVlvRefCodePkgTokenSpaceGuid.PcdTcl|0x0b|0x17091
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdTrpTrcd|0x0b|0xE4DB
+  gVlvRefCodePkgTokenSpaceGuid.PcdTrpTrcd|0x0b|0x17097
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdTwr|0x0c|0xE4F6
+  gVlvRefCodePkgTokenSpaceGuid.PcdTwr|0x0c|0x170A3
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdTwtr|0x06|0xE4F7
+  gVlvRefCodePkgTokenSpaceGuid.PcdTwtr|0x06|0x170A2
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdTrrd|0x06|0xE501
+  gVlvRefCodePkgTokenSpaceGuid.PcdTrrd|0x06|0x17096
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdTrtp|0x06|0xE502
+  gVlvRefCodePkgTokenSpaceGuid.PcdTrtp|0x06|0x17095
 
-  gVlvRefCodePkgTokenSpaceGuid.PcdTfaw|0x20|0xE503
+  gVlvRefCodePkgTokenSpaceGuid.PcdTfaw|0x20|0x170A1
 
   ## CONSUMES
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000046|0xE504
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000046|0x170A4
 
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0xE508
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x17098
 
 
 [PcdEx.IA32]

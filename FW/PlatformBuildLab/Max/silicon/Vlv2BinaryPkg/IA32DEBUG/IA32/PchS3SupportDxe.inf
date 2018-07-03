@@ -41,10 +41,10 @@
   DISPOSABLE|PchS3SupportDxe.pdb
 
 [PatchPcd.IA32]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x5C58
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x6160
 
   ## CONSUMES
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0xf0000043|0x5C60
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0xf0000043|0x6168
 
 
 [PcdEx.IA32]

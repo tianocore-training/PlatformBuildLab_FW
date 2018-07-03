@@ -46,7 +46,7 @@
   DXE_DEPEX|HeciDrv.depex
 
 [PatchPcd.IA32]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1C20
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1B30
 
 
 [PcdEx.IA32]

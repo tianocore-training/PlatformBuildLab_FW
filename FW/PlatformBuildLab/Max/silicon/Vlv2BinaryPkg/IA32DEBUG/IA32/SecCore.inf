@@ -44,12 +44,12 @@
   MdeModulePkg/MdeModulePkg.dec
 
 [Binaries.IA32]
-  PE32|SecCore.efi
   BIN|ResetVec.bin
+  PE32|SecCore.efi
   DISPOSABLE|SecCore.pdb
 
 [PatchPcd.IA32]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x16E0
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1828
 
 
 [PcdEx.IA32]

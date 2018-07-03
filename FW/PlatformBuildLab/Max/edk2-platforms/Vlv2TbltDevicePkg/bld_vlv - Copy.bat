@@ -1,7 +1,7 @@
 @REM @file
 @REM   Windows batch file to build BIOS ROM
 @REM
-@REM Copyright (c) 2006 - 2017, Intel Corporation. All rights reserved.<BR>
+@REM Copyright (c) 2006 - 2018, Intel Corporation. All rights reserved.<BR>
 @REM This program and the accompanying materials
 @REM are licensed and made available under the terms and conditions of the BSD License
 @REM which accompanies this distribution.  The full text of the license may be found at
@@ -39,7 +39,7 @@ cd ./edk2
 if exist %CORE_PATH%\edk2.log del %CORE_PATH%\edk2.log
 if exist %CORE_PATH%\unitool.log del %CORE_PATH%\unitool.log
 if exist %CORE_PATH%\Conf\target.txt del %CORE_PATH%\Conf\target.txt
-if exist %CORE_PATH%\Conf\tools_def.txt del %CORE_PATH%\Conf\tools_def.txt
+@REM if exist %CORE_PATH%\Conf\tools_def.txt del %CORE_PATH%\Conf\tools_def.txt
 if exist %CORE_PATH%\Conf\build_rule.txt del %CORE_PATH%\Conf\build_rule.txt
 if exist %CORE_PATH%\Conf\FrameworkDatabase.db del %CORE_PATH%\Conf\FrameworkDatabase.db
 if exist conf\.cache rmdir /q/s conf\.cache
@@ -135,20 +135,20 @@ if /i "%~2" == "RELEASE" (
 :: Additional EDK Build Setup/Configuration
 ::**********************************************************************
 echo.
-echo Setting the Build environment for VS2008/VS2010/VS2012/VS2013...
-if defined VS90COMNTOOLS (
-   if not defined VSINSTALLDIR call "%VS90COMNTOOLS%\vsvars32.bat"
-   if /I "%VS90COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\" (
-      set TOOL_CHAIN_TAG=VS2008
-   ) else (
-      set TOOL_CHAIN_TAG=VS2008x86
-   )
- ) else if defined VS100COMNTOOLS (
-  if not defined VSINSTALLDIR call "%VS100COMNTOOLS%\vsvars32.bat"
-  if /I "%VS100COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 10.0\Common7\Tools\" (
-    set TOOL_CHAIN_TAG=VS2010
+echo Setting the Build environment for VS2015/VS2013/VS2012/VS2010/VS2008...
+if defined VS140COMNTOOLS (
+  if not defined VSINSTALLDIR call "%VS140COMNTOOLS%\vsvars32.bat"
+  if /I "%VS140COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 14.0\Common7\Tools\" (
+    set TOOL_CHAIN_TAG=VS2015
   ) else (
-    set TOOL_CHAIN_TAG=VS2010x86
+    set TOOL_CHAIN_TAG=VS2015x86
+  ) 
+) else if defined VS120COMNTOOLS (
+  if not defined VSINSTALLDIR call "%VS120COMNTOOLS%\vsvars32.bat"
+  if /I "%VS120COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 12.0\Common7\Tools\" (
+    set TOOL_CHAIN_TAG=VS2013
+  ) else (
+    set TOOL_CHAIN_TAG=VS2013x86
   )
 ) else if defined VS110COMNTOOLS (
   if not defined VSINSTALLDIR call "%VS110COMNTOOLS%\vsvars32.bat"
@@ -157,15 +157,22 @@ if defined VS90COMNTOOLS (
   ) else (
     set TOOL_CHAIN_TAG=VS2012x86
   )
-) else if defined VS120COMNTOOLS (
-  if not defined VSINSTALLDIR call "%VS120COMNTOOLS%\vsvars32.bat"
-  if /I "%VS120COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 12.0\Common7\Tools\" (
-    set TOOL_CHAIN_TAG=VS2013
+) else if defined VS100COMNTOOLS (
+  if not defined VSINSTALLDIR call "%VS100COMNTOOLS%\vsvars32.bat"
+  if /I "%VS100COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 10.0\Common7\Tools\" (
+    set TOOL_CHAIN_TAG=VS2010
   ) else (
-    set TOOL_CHAIN_TAG=VS2013x86
+    set TOOL_CHAIN_TAG=VS2010x86
   )
+) else if defined VS90COMNTOOLS (
+   if not defined VSINSTALLDIR call "%VS90COMNTOOLS%\vsvars32.bat"
+   if /I "%VS90COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\" (
+      set TOOL_CHAIN_TAG=VS2008
+   ) else (
+      set TOOL_CHAIN_TAG=VS2008x86
+   )
 ) else (
-  echo  --ERROR: VS2008/VS2010/VS2012/VS2013 not installed correctly. VS90COMNTOOLS/VS100COMNTOOLS/VS110COMNTOOLS/VS120COMNTOOLS not defined ^^!
+  echo  --ERROR: VS2015/VS2013/VS2012/VS2010/VS2008 not installed correctly. VS140COMNTOOLS/VS120COMNTOOLS/VS110COMNTOOLS/VS100COMNTOOLS/VS90COMNTOOLS not defined ^^!
   echo.
   goto :BldFail
 )
@@ -179,7 +186,7 @@ findstr /V "TARGET  TARGET_ARCH  TOOL_CHAIN_TAG  BUILD_RULE_CONF  ACTIVE_PLATFOR
 
 echo TARGET          = %TARGET%                                  >> Conf\target.txt.tmp
 if "%Arch%"=="IA32" (
-    echo TARGET_ARCH = IA32                                      >> Conf\target.txt.tmp
+    echo TARGET_ARCH = IA32 X64                                      >> Conf\target.txt.tmp
 ) else if "%Arch%"=="X64" (
     echo TARGET_ARCH = IA32 X64                                  >> Conf\target.txt.tmp
 )
@@ -241,6 +248,7 @@ del /f/q ver_strings >nul
 
 set BIOS_Name=%BOARD_ID%_%Arch%_%BUILD_TYPE%_%VERSION_MAJOR%_%VERSION_MINOR%.ROM
 copy /y/b %WORKSPACE%\%BUILD_PATH%\FV\Vlv%Arch%.fd  %PLATFORM_PATH%\%BIOS_Name% >nul
+copy /y/b %WORKSPACE%\%BUILD_PATH%\FV\Vlv%Arch%.fd  %WORKSPACE%\%BUILD_PATH%\FV\Vlv.ROM >nul
 
 echo.
 echo Build location:     %BUILD_PATH%
@@ -248,6 +256,10 @@ echo BIOS ROM Created:   %BIOS_Name%
 echo.
 echo -------------------- The EDKII BIOS build has successfully completed. --------------------
 echo.
+@REM build capsule here
+::if "%openssl_path%" == "" goto Exit
+echo > %WORKSPACE%\%BUILD_PATH%\FV\SYSTEMFIRMWAREUPDATECARGO.Fv
+build -p %PLATFORM_PACKAGE%\PlatformCapsule.dsc
 goto Exit
 
 :Usage

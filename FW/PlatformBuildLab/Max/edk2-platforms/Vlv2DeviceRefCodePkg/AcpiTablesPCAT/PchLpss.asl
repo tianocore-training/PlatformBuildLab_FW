@@ -224,6 +224,7 @@ Device(URT1)
     {
       Return (0x0)
     }
+
     Return (0xF)
   }
 
@@ -245,6 +246,45 @@ Device(URT1)
     Offset (0x84),
     PSAT,   32
   }
+  
+  //
+  // Virtual COM port for HSUART1
+  //
+  Device (VUT0) {
+  
+    Name (_HID, "INT3511")
+    
+    Method (_STA, 0x0, NotSerialized)
+    {
+      If(LEqual(U1CM, 1)) {
+        Return(0xf)
+      } else {
+        Return(0x0)
+      }
+    }
+
+    Method (_CRS, 0, NotSerialized) {
+      Name (BBUF, ResourceTemplate () {
+        UartSerialBus (
+        0x0001C200, 
+        DataBitsEight, 
+        StopBitsOne, 
+        0xFC, 
+        LittleEndian, 
+        ParityTypeNone, 
+        FlowControlHardware,
+        0x0020, 
+        0x0020, 
+        "\\_SB.URT1",
+        0x00, 
+        ResourceConsumer, 
+        ,
+        )
+     })
+     Return (BBUF)
+   }
+
+  } //Device (VUT0)
 }//  Device (URT1)
 
 //
