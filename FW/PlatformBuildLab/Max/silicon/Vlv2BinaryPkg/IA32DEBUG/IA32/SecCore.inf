@@ -49,7 +49,7 @@
   DISPOSABLE|SecCore.pdb
 
 [PatchPcd.IA32]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1828
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x21A8
 
 
 [PcdEx.IA32]

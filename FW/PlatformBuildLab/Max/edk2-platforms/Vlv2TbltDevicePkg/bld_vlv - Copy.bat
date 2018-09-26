@@ -39,7 +39,7 @@ cd ./edk2
 if exist %CORE_PATH%\edk2.log del %CORE_PATH%\edk2.log
 if exist %CORE_PATH%\unitool.log del %CORE_PATH%\unitool.log
 if exist %CORE_PATH%\Conf\target.txt del %CORE_PATH%\Conf\target.txt
-@REM if exist %CORE_PATH%\Conf\tools_def.txt del %CORE_PATH%\Conf\tools_def.txt
+if exist %CORE_PATH%\Conf\tools_def.txt del %CORE_PATH%\Conf\tools_def.txt
 if exist %CORE_PATH%\Conf\build_rule.txt del %CORE_PATH%\Conf\build_rule.txt
 if exist %CORE_PATH%\Conf\FrameworkDatabase.db del %CORE_PATH%\Conf\FrameworkDatabase.db
 if exist conf\.cache rmdir /q/s conf\.cache

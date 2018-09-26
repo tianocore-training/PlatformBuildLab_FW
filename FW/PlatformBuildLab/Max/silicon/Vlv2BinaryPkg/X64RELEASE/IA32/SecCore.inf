@@ -48,7 +48,7 @@
   PE32|SecCore.efi
 
 [PatchPcd.IA32]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1368
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x00000000e0000000|0x1CE8
 
 
 [PcdEx.IA32]

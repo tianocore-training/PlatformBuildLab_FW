@@ -220,6 +220,7 @@ if "%TOOL_CHAIN_TAG%" == "" (
   goto :BldFail
 )
 
+
 echo Ensuring correct build directory is present for GenBiosId...
 set BUILD_PATH=Build\%PLATFORM_NAME%\%TARGET%_%TOOL_CHAIN_TAG%
 echo BUILD_PATH=Build\%PLATFORM_NAME%\%TARGET%_%TOOL_CHAIN_TAG%
