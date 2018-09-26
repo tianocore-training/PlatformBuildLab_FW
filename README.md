@@ -1,5 +1,6 @@
 <!--- @file
-  Readme.md for UEFI / EDK II Training  Lab Material - Platform Build Lab FW
+  Readme.md for UEFI / EDK II Training  Lab Material - Platform Build Lab FW 
+  
 
   Copyright (c) 2018, Intel Corporation. All rights reserved.<BR>
 
@@ -32,19 +33,26 @@
 # PlatformBuildLab_FW
 Lab Material for Platform Build Lab - Currently MinnowBoard Max/ Turbot
 
+Copy the contents of the FW Directory to the other downloaded Training material
+
+
 To see the Slides with links to the presentations goto https://gitpitch.com/Laurie0131/Tianocore_Training_Contents/master#/
 
 ### PlatformBuildLab_FW will create a FW directory as follows:
 
-- FW
+- **FW**
   - PlatformBuildLab
-     - Max         - source code for the Minnowboard Max / Turbot V.97
+     - Max source code for the Minnowboard Max / Turbot V.99
 
 
 ####  From Lab_Material_FW
 
--FW
+- **FW**
   - Documentation
   - DriverWizard
   - edk2 - Same as https://github.com/tianocore/edk2 
   - LabSampleCode
+  
+####  From Presentations_FW
+- **FW**
+  - Presentations   
