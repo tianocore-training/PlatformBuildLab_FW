@@ -36,7 +36,7 @@ Lab Material for Platform Build Lab - Currently MinnowBoard Max/ Turbot
 Copy the contents of the FW Directory to the other downloaded Training material
 
 
-To see the Slides with links to the presentations goto https://gitpitch.com/Laurie0131/Tianocore_Training_Contents/master#/
+To see the Slides with links to the presentations goto https://gitpitch.com/tianocore-training/Tianocore_Training_Contents/master#/
 
 ### PlatformBuildLab_FW will create a FW directory as follows:
 
