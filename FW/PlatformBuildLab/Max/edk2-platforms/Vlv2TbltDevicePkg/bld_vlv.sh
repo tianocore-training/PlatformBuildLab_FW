@@ -250,7 +250,7 @@ $PLATFORM_PACKAGE/GenBiosId -i $CORE_PATH/Conf/BiosId.env -o $WORKSPACE/$BUILD_P
  echo Current directory is $(pwd)
  echo . . . 
  echo  
- echo "Invoking EDK2 build..."
+echo "Invoking EDK2 build..."
  echo "build " $JLog  -D $SDB -D $LG $QF 
  echo "Press ENTER to continue OR Control-C to abort"
  read

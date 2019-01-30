@@ -2851,7 +2851,7 @@ InternalShellPrintWorker(
             gST->ConOut->SetAttribute(gST->ConOut, EFI_TEXT_ATTR(EFI_WHITE, ((OriginalAttribute&(BIT4|BIT5|BIT6))>>4)));
             break;
           case (L'B'):
-            gST->ConOut->SetAttribute(gST->ConOut, EFI_TEXT_ATTR(EFI_CYAN, ((OriginalAttribute&(BIT4|BIT5|BIT6))>>4)));
+            gST->ConOut->SetAttribute(gST->ConOut, EFI_TEXT_ATTR(EFI_BLUE, ((OriginalAttribute&(BIT4|BIT5|BIT6))>>4)));
             break;
           case (L'V'):
             gST->ConOut->SetAttribute(gST->ConOut, EFI_TEXT_ATTR(EFI_GREEN, ((OriginalAttribute&(BIT4|BIT5|BIT6))>>4)));
@@ -2904,7 +2904,7 @@ InternalShellPrintWorker(
     %N       -   Set output attribute to normal
     %H       -   Set output attribute to highlight
     %E       -   Set output attribute to error
-    %B       -   Set output attribute to cyan color
+    %B       -   Set output attribute to blue color
     %V       -   Set output attribute to green color
 
   Note: The background color is controlled by the shell command cls.
@@ -2953,7 +2953,7 @@ ShellPrintEx(
     %N       -   Set output attribute to normal.
     %H       -   Set output attribute to highlight.
     %E       -   Set output attribute to error.
-    %B       -   Set output attribute to cyan color.
+    %B       -   Set output attribute to blue color.
     %V       -   Set output attribute to green color.
 
   Note: The background color is controlled by the shell command cls.

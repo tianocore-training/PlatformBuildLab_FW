@@ -12,7 +12,7 @@
 3) Checkout MinnowBoard Max Branch from GitHub with the following command.
     i)  Run "git clone https://github.com/tianocore/edk2-platforms.git -b devel-MinnowBoardMax-UDK2017"
    ii)  Enter folder edk2-platforms
-  iii)  Run the command "git checkout 423105b15de6dfd769eed56026fa3bc28eb349ef"
+  iii)  Run the command "git checkout 2a5f80b862e46de213a3f3635c43394deacdfb05"
    iv)  Enter folder "C:\MyWorkspace"
 
 4) Checkout BaseTools binaries and copy them to BaseTools binary folder.
@@ -20,8 +20,8 @@
    ii)  Enter folder edk2-BaseTools-win32
   iii)  Run the command "git checkout 0e088c19ab31fccd1d2f55d9e4fe0314b57c0097"
 
-5) Download MinnowBoard MAX 0.99 Binary Object Modules from http://firmware.intel.com/projects/minnowboard-max.
-   The "MinnowBoard_MAX-0.99-Binary.Objects.zip" file contains three additional
+5) Download MinnowBoard MAX 1.00 Binary Object Modules from http://firmware.intel.com/projects/minnowboard-max.
+   The "MinnowBoard_MAX-1.00-Binary.Objects.zip" file contains three additional
    folders required for the full source tree.
 
     IA32FamilyCpuPkg

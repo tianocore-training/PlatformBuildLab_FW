@@ -165,10 +165,10 @@ if defined VS90COMNTOOLS (
    if /I "%VS90COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 9.0\Common7\Tools\" (
 
       set TOOL_CHAIN_TAG=VS2008
-   ) else (
+  ) else (
       set TOOL_CHAIN_TAG=VS2008x86
-   )
- ) else (
+  ) 
+  ) else (
 echo Not VS 2009
 )
 if defined VS100COMNTOOLS (
@@ -188,14 +188,14 @@ if defined VS110COMNTOOLS (
   ) else (
     set TOOL_CHAIN_TAG=VS2012x86
   )
-) else (
+  ) else (
 echo Not VS 2012
-) 
+  )
 if defined VS120COMNTOOLS (
   if not defined VSINSTALLDIR call "%VS120COMNTOOLS%\vsvars32.bat"
   if /I "%VS120COMNTOOLS%" == "C:\Program Files\Microsoft Visual Studio 12.0\Common7\Tools\" (
     set TOOL_CHAIN_TAG=VS2013
-  ) else (
+   ) else (
     set TOOL_CHAIN_TAG=VS2013x86
   )
 ) else (
@@ -207,7 +207,7 @@ if defined VS140COMNTOOLS (
     set TOOL_CHAIN_TAG=VS2015
   ) else (
     set TOOL_CHAIN_TAG=VS2015x86
-  )
+   )
 ) else (
 echo Not VS 2015
 )
