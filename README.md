@@ -42,7 +42,8 @@ To see the Slides with links to the presentations goto https://gitpitch.com/tian
 
 - **FW**
   - PlatformBuildLab
-     - Max source code for the Minnowboard Max / Turbot V.99
+     - Max source code for the Minnowboard Max / Turbot V 1.00
+	 - 
 
 
 ####  From Lab_Material_FW
